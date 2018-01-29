@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="AudioVis.TwoThumbSlider"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+             xmlns:local="clr-namespace:AudioVis"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             MinHeight="200px"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+        </Style>
+    </UserControl.Resources>
+    <Grid Width="45">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+        <TextBox Name="Up_tb" Text="{Binding ElementName=Value_sl, Path=UpperValue, Mode=TwoWay}" MinHeight="20" />
+        <Controls:RangeSlider Grid.Row="1" Orientation="Vertical" Name="Value_sl" Width="30px" Minimum="{Binding Min}" Maximum="{Binding Max}" MinRangeWidth="0" LowerValue="{Binding Path=Low, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" UpperValue="{Binding Path=High, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="1" LargeChange="10" UpperValueChanged="Value_sl_UpperValueChanged" LowerValueChanged="Value_sl_LowerValueChanged"/>
+        <TextBox Name="Dwn_tb" Grid.Row="2" Text="{Binding ElementName=Value_sl, Path=LowerValue, Mode=TwoWay}" MinHeight="20"/>
+    </Grid>
+</UserControl>

@@ -1,0 +1,162 @@
+﻿<Controls:MetroWindow  x:Class="AudioVis.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:AudioVis"
+        mc:Ignorable="d"
+        Title="Audio Lighteness Visualizer" SizeToContent="WidthAndHeight" MinHeight="400" MinWidth="400"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}" Closing="MetroWindow_Closing">
+    <Controls:MetroWindow.Resources>
+        <Style TargetType="CheckBox" x:Key="HelpCheckbox">
+            <Setter Property="Cursor" Value="Help"></Setter>
+            <Setter Property="Content" Value=""></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Border BorderBrush="{x:Null}" Width="30" Height="30">
+                            <TextBlock x:Name="Bullet_tb" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                            ?
+                            </TextBlock>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bullet_tb" Property="Foreground" Value="Yellow">
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Controls:MetroWindow.Resources>
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <CheckBox Content="On top" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=Topmost, Mode=TwoWay}"/>
+            <CheckBox Content="Separate L/R" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=FftAndColorsSource.TwoChannels, Mode=TwoWay}" BorderBrush="Yellow">
+                <CheckBox.ToolTip>
+                    <TextBlock>
+                        Check this if you want to use sepatate channels data for processing.
+                        <LineBreak/>
+                        Uncheck for merge L+R to mono.
+                    </TextBlock>
+                </CheckBox.ToolTip>
+            </CheckBox>
+            <!--<CheckBox Style="{StaticResource HelpCheckbox}" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" Name="Help_cb"/>-->
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="45"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=Left_ex, Path=IsExpanded}" Value="False">
+                                <Setter Property="Width" Value="{Binding ElementName=Left_ex, Path=Width}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=Left_ex, Path=IsExpanded}" Value="True">
+                                <Setter Property="Width" Value="*"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+            <ColumnDefinition Width="230"/>
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="ColumnDefinition">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=Right_ex, Path=IsExpanded}" Value="False">
+                                <Setter Property="Width" Value="{Binding ElementName=Left_ex, Path=Width}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=Right_ex, Path=IsExpanded}" Value="True">
+                                <Setter Property="Width" Value="*"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Expander Grid.Column="0" Grid.Row="0" ExpandDirection="Left" IsExpanded="True" x:Name="Left_ex" BorderBrush="Yellow">
+            <Expander.ToolTip>
+                <ToolTip>
+                    <TextBlock>
+                        Visual representation of calculated values.
+                        <LineBreak />
+                        Shows both channels data or left channel data if "separate" checkbox is checked.
+                        <LineBreak />
+                        Collapse it to save CPU/GPU.
+                    </TextBlock>
+                </ToolTip>
+            </Expander.ToolTip>
+            <Expander.Header>
+                <TextBlock Text="Left/Both Channels">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Expander.Header>
+            <local:Visuals x:Name="Left_v" Header="Left/Both channels"/>
+        </Expander>
+        <Grid Grid.Row="0" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="115"/>
+                <ColumnDefinition Width="115"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Range" Name="r_gb" BorderBrush="Yellow">
+                <GroupBox.ToolTip>
+                    <TextBlock>
+                            Output values will be calculated inside specified range.
+                    </TextBlock>
+                </GroupBox.ToolTip>
+                <local:TwoSlidersWithLink x:Name="LeftSliders_tsl"/>
+            </GroupBox>
+            
+
+            <GroupBox  Grid.Row="0" Grid.Column="1" Header="Frequency" Name="f_gb" BorderBrush="Yellow">
+                <GroupBox.ToolTip>
+                    <TextBlock>
+                            Represents range in HZ in which samples will be processed.
+                            <LineBreak />
+                            You can find more info there: www.teachmeaudio.com/mixing/techniques/audio-spectrum
+                    </TextBlock>
+                </GroupBox.ToolTip>
+                <StackPanel Orientation="Horizontal">
+                    <local:TwoThumbSlider Min="0" Max="20000" Low="{Binding Path=FftAndColorsSource.BlueLight.LowHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}}" High="{Binding Path=FftAndColorsSource.BlueLight.HighHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}}" MinRangeWidth="20"/>
+                    <local:TwoThumbSlider Min="0.0" Max="20000" Low="{Binding Path=FftAndColorsSource.YellowLight.LowHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}}" High="{Binding Path=FftAndColorsSource.YellowLight.HighHz, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}}" MinRangeWidth="20"/>
+                </StackPanel>
+            </GroupBox>
+
+        </Grid>
+        <Expander Grid.Column="2" ExpandDirection="Right" IsExpanded="False" x:Name="Right_ex" BorderBrush="Yellow">
+            <Expander.ToolTip>
+                <ToolTip>
+                    <TextBlock>
+                        Visual representation of calculated values.
+                        <LineBreak />
+                        Shows right channel data. Will be updated only if "separate" checkbox is checked.
+                        <LineBreak />
+                        Collapse it to save CPU/GPU.
+                    </TextBlock>
+                </ToolTip>
+            </Expander.ToolTip>
+            <Expander.Header>
+                <TextBlock Text="Right Channel">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="90" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+            </Expander.Header>
+            <local:Visuals x:Name="Right_v" Header="Right channel"/>
+        </Expander>
+    </Grid>
+</Controls:MetroWindow>
