@@ -158,5 +158,6 @@
             </Expander.Header>
             <local:Visuals x:Name="Right_v" Header="Right channel"/>
         </Expander>
+        <ComboBox Grid.Row="2" Margin="10" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=ArduinoBridge.Instance.ComsList, diag:PresentationTraceSources.TraceLevel=High}" SelectionChanged="ComboBox_SelectionChanged" Name="Ports_cb"></ComboBox>
     </Grid>
 </Controls:MetroWindow>

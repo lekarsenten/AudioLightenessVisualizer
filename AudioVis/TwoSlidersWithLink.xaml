@@ -20,7 +20,7 @@
 
                 <local:TwoThumbSlider Min="0.0" Max="255.0" Low="{Binding Path=FftAndColorsSource.YellowLight.Low, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" High="{Binding Path=FftAndColorsSource.YellowLight.High, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" x:Name="Yellow_sl" IsEnabled="{Binding Path=FftAndColorsSource.NotIsLinked, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Grid.Column="1"/>
 
-        <CheckBox Grid.Row="1" Grid.Column="0" Name="Linked_cb" Content="Linked" IsChecked="{Binding Path=FftAndColorsSource.IsLinked, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Grid.ColumnSpan="2">
+        <CheckBox Grid.Row="1" Grid.Column="0" Name="Linked_cb" Content="Linked" IsChecked="{Binding Path=FftAndColorsSource.IsLinked, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Grid.ColumnSpan="2" BorderBrush="Yellow">
             <CheckBox.ToolTip>
                 <ToolTip>
                     <TextBlock>

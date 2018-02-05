@@ -130,6 +130,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ArduinoOutput\ArduinoOutput.csproj">
+      <Project>{9C2497BA-386D-445E-ABD0-08FB28EBDA3D}</Project>
+      <Name>ArduinoOutput</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FFTDataProvider\FFTDataProvider.csproj">
       <Project>{47280212-73AB-4E70-8E35-7A9925B67001}</Project>
       <Name>FFTDataProvider</Name>

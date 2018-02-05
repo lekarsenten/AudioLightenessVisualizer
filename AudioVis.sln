@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioVis", "AudioVis\AudioVis.csproj", "{0B09E1BB-DC73-4A59-910F-394C88B65D4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFTDataProvider", "FFTDataProvider\FFTDataProvider.csproj", "{47280212-73AB-4E70-8E35-7A9925B67001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArduinoOutput", "ArduinoOutput\ArduinoOutput.csproj", "{9C2497BA-386D-445E-ABD0-08FB28EBDA3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{47280212-73AB-4E70-8E35-7A9925B67001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47280212-73AB-4E70-8E35-7A9925B67001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47280212-73AB-4E70-8E35-7A9925B67001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C2497BA-386D-445E-ABD0-08FB28EBDA3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C2497BA-386D-445E-ABD0-08FB28EBDA3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C2497BA-386D-445E-ABD0-08FB28EBDA3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C2497BA-386D-445E-ABD0-08FB28EBDA3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,21 +1,6 @@
-﻿using FFTDataProvider;
-using LiveCharts;
+﻿using ArduinoOutput;
 using MahApps.Metro.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AudioVis
 {
@@ -26,15 +11,18 @@ namespace AudioVis
     {
         public FFTDependencyWrapper FftAndColorsSource { get; set; }
 
+        public ArduinoSender ArduinoBridge { get; set; }
+
         System.Windows.Threading.DispatcherTimer t;
         public MainWindow()
         {
             FftAndColorsSource = new FFTDependencyWrapper();
+            ArduinoBridge = ArduinoSender.Instance;
             //this.DataContext = FftAndColorsSource;            
             InitializeComponent();
             LeftSliders_tsl.FftAndColorsSource = FftAndColorsSource;
             t = new System.Windows.Threading.DispatcherTimer();
-            t.Interval = new TimeSpan(0,0,0,0, 25);
+            t.Interval = new TimeSpan(0,0,0,0, 50);
             t.Tick += new EventHandler(dispatcherTimer_Tick);
             t.Start();
         }
@@ -43,9 +31,13 @@ namespace AudioVis
         {
             FftAndColorsSource.processFFT();
             Left_v.AddValues(FftAndColorsSource.BlueLight.Values[0], FftAndColorsSource.YellowLight.Values[0]);
-            if (Right_ex.IsExpanded && FftAndColorsSource.TwoChannels)
+            ArduinoBridge.SendValue(new Packet {channelData = (ChannelData.Left | ChannelData.LowFreq), Brightness = (byte)FftAndColorsSource.BlueLight.Values[0] });
+            ArduinoBridge.SendValue(new Packet { channelData = (ChannelData.Left | ChannelData.HighFreq), Brightness = (byte)FftAndColorsSource.YellowLight.Values[0] });
+            if (FftAndColorsSource.TwoChannels)
             {
                 Right_v.AddValues(FftAndColorsSource.BlueLight.Values[1], FftAndColorsSource.YellowLight.Values[1]);
+                ArduinoBridge.SendValue(new Packet { channelData = (ChannelData.Right | ChannelData.LowFreq), Brightness = (byte)FftAndColorsSource.BlueLight.Values[1] });
+                ArduinoBridge.SendValue(new Packet { channelData = (ChannelData.Right | ChannelData.HighFreq), Brightness = (byte)FftAndColorsSource.YellowLight.Values[1] });
             }
         }
 
@@ -55,6 +47,12 @@ namespace AudioVis
         {
             t.Stop();
             FftAndColorsSource.Dispose();
+            ArduinoBridge.Dispose();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            ArduinoBridge.SetPort(Ports_cb.SelectedItem as String);
         }
     }
 }
