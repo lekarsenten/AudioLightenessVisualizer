@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FFTDependencyWrapper.cs" />
+    <Compile Include="SettingsSerializationManager.cs" />
     <Compile Include="TwoSlidersWithLink.xaml.cs">
       <DependentUpon>TwoSlidersWithLink.xaml</DependentUpon>
     </Compile>

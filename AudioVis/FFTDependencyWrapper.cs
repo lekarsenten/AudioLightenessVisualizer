@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AudioVis
 {
+    [Serializable]
     public class ColorTemperatureDataDependencyWrapper : ColorTemperatureData, INotifyPropertyChanged
     {
         public ColorTemperatureDataDependencyWrapper(float LowHz, float HighHz, ushort fftSize, float sampleSize) : base(LowHz, HighHz, fftSize, sampleSize)
@@ -66,12 +67,19 @@ namespace AudioVis
             }
         }
 
+        public ColorTemperatureDataDependencyWrapper() : base()
+        {
+
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+    [Serializable]
     public class FFTDependencyWrapper : FFTDataProvider.FFTDataMapper, INotifyPropertyChanged
     {
         private bool _isLinked;
@@ -168,7 +176,7 @@ namespace AudioVis
             YellowLight = new ColorTemperatureDataDependencyWrapper(HighBucketLowValueHz, HighBucketHighValueHz, fftSize, base.FFTProvider.SamplesRate);
         }
 
-        public void UpdateLinked(ColorTemperatureData source, ColorTemperatureData target)
+        public void UpdateLinked(ColorTemperatureDataDependencyWrapper source, ColorTemperatureDataDependencyWrapper target)
         {
             if (!IsLinked)
                 return;

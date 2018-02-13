@@ -16,9 +16,8 @@ namespace AudioVis
         System.Windows.Threading.DispatcherTimer t;
         public MainWindow()
         {
-            FftAndColorsSource = new FFTDependencyWrapper();
+            FftAndColorsSource = SettingsSerializationManager.DeSerialize("default.xml", typeof(FFTDependencyWrapper)) as FFTDependencyWrapper;
             ArduinoBridge = ArduinoSender.Instance;
-            //this.DataContext = FftAndColorsSource;            
             InitializeComponent();
             LeftSliders_tsl.FftAndColorsSource = FftAndColorsSource;
             t = new System.Windows.Threading.DispatcherTimer();
@@ -46,6 +45,7 @@ namespace AudioVis
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             t.Stop();
+            SettingsSerializationManager.Serialize("default.xml", FftAndColorsSource);
             FftAndColorsSource.Dispose();
             ArduinoBridge.Dispose();
         }

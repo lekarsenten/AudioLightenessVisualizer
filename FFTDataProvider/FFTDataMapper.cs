@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace FFTDataProvider
 {
@@ -54,9 +55,10 @@ namespace FFTDataProvider
 
         public float Avg { get; private set; }
     }
+    [Serializable]
     public class ColorTemperatureData
     {
-        public ushort High
+        protected ushort High
         {
             get
             {
@@ -71,7 +73,7 @@ namespace FFTDataProvider
                 }
             }
         }
-        public ushort Low
+        protected ushort Low
         {
             get { return _low; }
             set
@@ -83,8 +85,8 @@ namespace FFTDataProvider
                 }
             }
         }
-        public float LowHz { get; set; }
-        public float HighHz { get; set; }
+        protected float LowHz { get; set; }
+        protected float HighHz { get; set; }
         protected ushort LowIndex
         {
             get
@@ -109,16 +111,15 @@ namespace FFTDataProvider
             }
         }
         
-        public float Avg { get; private set; }
-        private float minAvgFFT = 1;
-        private float maxAvgFFT = 0;
         private ushort _high;
         private ushort _low;
-        private readonly float fftSize;
-        private readonly float sampleSize;
+        public float fftSize { get; set; }
+        public float sampleSize { get; set; }
 
+        [XmlIgnore]
         public AvgHolder[] AvgHolders { get; set; }
 
+        [XmlIgnore]
         public ushort Value
         {
             get
@@ -127,6 +128,7 @@ namespace FFTDataProvider
             }
         }
 
+        [XmlIgnore]
         public ushort[] Values
         {
             get
@@ -134,7 +136,7 @@ namespace FFTDataProvider
                 return AvgHolders.Select(x => (ushort)Math.Ceiling(Low + (High - Low) * x.Percent)).ToArray();
             }
         }
-        public ColorTemperatureData(float LowHz, float HighHz, ushort fftSize, float sampleSize)
+        public ColorTemperatureData(float LowHz, float HighHz, ushort fftSize, float sampleSize):this()
         {
             this.fftSize = fftSize;
             this.sampleSize = sampleSize;
@@ -142,9 +144,6 @@ namespace FFTDataProvider
             this.HighHz = HighHz;
             High = 255;
             Low = 0;
-            AvgHolders = new AvgHolder[2];
-            AvgHolders[0] = new AvgHolder();
-            AvgHolders[1] = new AvgHolder();
         }
         
         public float CalcAvg(float[] data, byte index = 0)
@@ -162,7 +161,14 @@ namespace FFTDataProvider
             //Debug.WriteLine("");
             return AvgHolders[index].CalcAvg(dataHolder);
         }
+        public ColorTemperatureData()
+        {
+            AvgHolders = new AvgHolder[2];
+            AvgHolders[0] = new AvgHolder();
+            AvgHolders[1] = new AvgHolder();
+        }
     }
+    [Serializable]
     public class FFTDataMapper : IDisposable
     {
         public const float LowBucketLowValueHz = 50;
@@ -170,9 +176,12 @@ namespace FFTDataProvider
         public const float HighBucketLowValueHz = 500;
         public const float HighBucketHighValueHz = 5000;
         protected readonly ushort fftSize;
-        public ColorTemperatureData BlueLight { get; set; }
-        public ColorTemperatureData YellowLight { get; set; }
-        FFTDataProvider _instance = null;
+        protected ColorTemperatureData BlueLight { get; set; }
+        protected ColorTemperatureData YellowLight { get; set; }
+
+        [XmlIgnore]
+        protected FFTDataProvider _instance = null;
+        [XmlIgnore]
         protected FFTDataProvider FFTProvider
         {
             get
@@ -184,7 +193,6 @@ namespace FFTDataProvider
                 return _instance;
             }
         }
-        bool fftInitialized = false;
 
         public FFTDataMapper() : this(FftSize.Fft2048)
         {
