@@ -83,6 +83,7 @@ namespace ArduinoOutput
 
         public void SetPort(string portName)
         {
+            Dispose();//close previous COM port
             _currentComPort = new SerialPort(portName);
             _currentComPort.BaudRate = 19200;
             _currentComPort.WriteTimeout = 100;
@@ -127,7 +128,10 @@ namespace ArduinoOutput
 
         public void Dispose()
         {
-            ((IDisposable)_currentComPort).Dispose();
+            if (_currentComPort != null)
+            {
+                ((IDisposable)_currentComPort).Dispose();
+            }
         }
     }
 }
