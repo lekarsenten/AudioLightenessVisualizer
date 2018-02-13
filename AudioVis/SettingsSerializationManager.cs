@@ -8,17 +8,17 @@ namespace AudioVis
     {
         public static void Serialize(string fName, object source)
         {
-            XmlSerializer soapSerializer = new XmlSerializer(source.GetType());
-            using (FileStream writer = new FileStream("default.xml", FileMode.Create))
+            XmlSerializer xmlSerializer = new XmlSerializer(source.GetType());
+            using (FileStream writer = new FileStream(fName, FileMode.Create))
             {
                 try
                 {
-                    soapSerializer.Serialize(writer, source);
+                    xmlSerializer.Serialize(writer, source);
                 }
                 catch (Exception ex)
                 {
                     writer.Close();
-                    File.Delete("default.xml");
+                    File.Delete(fName);
                 }
             }
         }
