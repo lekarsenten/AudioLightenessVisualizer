@@ -13,7 +13,7 @@ namespace AudioVis
             {
                 try
                 {
-                    soapSerializer.Serialize(writer, source.GetType());
+                    soapSerializer.Serialize(writer, source);
                 }
                 catch (Exception ex)
                 {
@@ -32,7 +32,7 @@ namespace AudioVis
                     return soapSerializer.Deserialize(reader);
                 }
             }
-            catch (Exception ex) when (ex is FileNotFoundException || ex is System.Runtime.Serialization.SerializationException || ex is System.Xml.XmlException)
+            catch (Exception ex) when (ex is FileNotFoundException || ex is System.Runtime.Serialization.SerializationException || ex is System.Xml.XmlException || ex is InvalidOperationException)
             {
                 //suppress them and load default stuff
                 return Activator.CreateInstance(targetType);
