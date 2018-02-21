@@ -28,7 +28,7 @@ namespace FFTDataProvider
             {
                 maxAvgFFT = Avg;
             }
-            if (Avg.Equals(0.0))//reset min/max due to song/audio ending
+            if ((0.0).Equals(Avg))//reset min/max due to song/audio ending
             {
                 minAvgFFT = 1;
                 maxAvgFFT = 0;
@@ -85,8 +85,22 @@ namespace FFTDataProvider
                 }
             }
         }
-        protected float LowHz { get; set; }
-        protected float HighHz { get; set; }
+        protected float LowHz
+        {
+            get => _lowHz; set
+            {
+                _lowHz = value;
+                ReInitializeAvgHolders();
+            }
+        }
+        protected float HighHz
+        {
+            get => _highHz; set
+            {
+                _highHz = value;
+                ReInitializeAvgHolders();
+            }
+        }
         protected ushort LowIndex
         {
             get
@@ -110,9 +124,12 @@ namespace FFTDataProvider
                 return HighIndex - LowIndex;
             }
         }
-        
+
         private ushort _high;
         private ushort _low;
+        private float _lowHz;
+        private float _highHz;
+
         public float fftSize { get; set; }
         public float sampleSize { get; set; }
 
@@ -136,7 +153,7 @@ namespace FFTDataProvider
                 return AvgHolders.Select(x => (ushort)Math.Ceiling(Low + (High - Low) * x.Percent)).ToArray();
             }
         }
-        public ColorTemperatureData(float LowHz, float HighHz, ushort fftSize, float sampleSize):this()
+        public ColorTemperatureData(float LowHz, float HighHz, ushort fftSize, float sampleSize) : this()
         {
             this.fftSize = fftSize;
             this.sampleSize = sampleSize;
@@ -145,7 +162,7 @@ namespace FFTDataProvider
             High = 255;
             Low = 0;
         }
-        
+
         public float CalcAvg(float[] data, byte index = 0)
         {
             var dataHolder = new float[BucketsSize];
@@ -162,6 +179,11 @@ namespace FFTDataProvider
             return AvgHolders[index].CalcAvg(dataHolder);
         }
         public ColorTemperatureData()
+        {
+            ReInitializeAvgHolders();
+        }
+
+        public void ReInitializeAvgHolders()
         {
             AvgHolders = new AvgHolder[2];
             AvgHolders[0] = new AvgHolder();

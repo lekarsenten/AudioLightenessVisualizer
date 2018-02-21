@@ -6,15 +6,13 @@
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
              xmlns:local="clr-namespace:AudioVis"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             d:DataContext="{Binding RelativeSource={RelativeSource Self}}"
              MinHeight="200px"
              mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="TextBox">
         </Style>
     </UserControl.Resources>
-    <Grid Width="45">
+    <Grid Width="45" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TwoThumbSlider}}}" d:DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:TwoThumbSlider}}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>

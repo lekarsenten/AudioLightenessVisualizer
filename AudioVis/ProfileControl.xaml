@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="AudioVis.ProfileControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AudioVis"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="30" Width="30" Height="30">
+    <UserControl.Resources>
+        <Style TargetType="CheckBox" x:Key="HelpCheckbox">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Content" Value=""/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Border BorderBrush="White" BorderThickness="1">
+                        <Grid Background="Transparent" Width="25" Height="25" x:Name="Base_gr">
+                            <ContentPresenter x:Name="content" Grid.Column="0" Margin="0,0,0,0"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            RecognizesAccessKey="True"/>
+                        </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Base_gr" Property="Background" Value="Blue"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource HelpCheckbox}" ToolTip="LMB to create/remove profile, RMB to load" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" MouseRightButtonUp="CheckBox_Click" Name="Profile_cb">
+            <TextBlock x:Name="CB_tb" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:ProfileControl}}, Path=ProfileNumber}"/>
+        </CheckBox>
+    </Grid>
+</UserControl>

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
              xmlns:local="clr-namespace:AudioVis"
              mc:Ignorable="d"
              >
@@ -16,11 +17,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-                <local:TwoThumbSlider Min="0.0" Max="255.0" Low="{Binding Path=FftAndColorsSource.BlueLight.Low, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" High="{Binding Path=FftAndColorsSource.BlueLight.High, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" x:Name="Blue_sl" ValueChanged="Blue_sl_ValueChanged" Grid.Column="0"/>
+        <local:TwoThumbSlider Min="0.0" Max="255.0" Low="{Binding Path=BlueLight.Low, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" High="{Binding Path=BlueLight.High, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="Blue_sl" ValueChanged="Blue_sl_ValueChanged" Grid.Column="0"/>
 
-                <local:TwoThumbSlider Min="0.0" Max="255.0" Low="{Binding Path=FftAndColorsSource.YellowLight.Low, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" High="{Binding Path=FftAndColorsSource.YellowLight.High, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" x:Name="Yellow_sl" IsEnabled="{Binding Path=FftAndColorsSource.NotIsLinked, Mode=OneWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Grid.Column="1"/>
+        <local:TwoThumbSlider Min="0.0" Max="255.0" Low="{Binding Path=YellowLight.Low, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" High="{Binding Path=YellowLight.High, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="Yellow_sl" IsEnabled="{Binding Path=NotIsLinked, Mode=OneWay}" Grid.Column="1"/>
 
-        <CheckBox Grid.Row="1" Grid.Column="0" Name="Linked_cb" Content="Linked" IsChecked="{Binding Path=FftAndColorsSource.IsLinked, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" Grid.ColumnSpan="2" BorderBrush="Yellow">
+        <CheckBox Grid.Row="1" Grid.Column="0" Name="Linked_cb" Content="Linked" IsChecked="{Binding Path=IsLinked, Mode=TwoWay}" Grid.ColumnSpan="2" BorderBrush="Yellow">
             <CheckBox.ToolTip>
                 <ToolTip>
                     <TextBlock>

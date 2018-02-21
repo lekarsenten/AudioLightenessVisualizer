@@ -68,6 +68,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FFTDependencyWrapper.cs" />
+    <Compile Include="ProfileControl.xaml.cs">
+      <DependentUpon>ProfileControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsSerializationManager.cs" />
     <Compile Include="TwoSlidersWithLink.xaml.cs">
       <DependentUpon>TwoSlidersWithLink.xaml</DependentUpon>
@@ -90,6 +93,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ProfileControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TwoSlidersWithLink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

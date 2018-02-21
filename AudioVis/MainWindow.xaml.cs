@@ -1,6 +1,7 @@
 ﻿using ArduinoOutput;
 using MahApps.Metro.Controls;
 using System;
+using System.IO;
 
 namespace AudioVis
 {
@@ -19,7 +20,7 @@ namespace AudioVis
             FftAndColorsSource = SettingsSerializationManager.DeSerialize("default.xml", typeof(FFTDependencyWrapper)) as FFTDependencyWrapper;
             ArduinoBridge = ArduinoSender.Instance;
             InitializeComponent();
-            LeftSliders_tsl.FftAndColorsSource = FftAndColorsSource;
+            initializeBindings();
             t = new System.Windows.Threading.DispatcherTimer();
             t.Interval = new TimeSpan(0,0,0,0, 50);
             t.Tick += new EventHandler(dispatcherTimer_Tick);
@@ -53,6 +54,30 @@ namespace AudioVis
         private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             ArduinoBridge.SetPort(Ports_cb.SelectedItem as String);
+        }
+
+        public void ProfileControl_CheckBoxClicked(object sender, Tuple<ProfileAction, byte> e)
+        {
+            switch (e.Item1)
+            {
+                case ProfileAction.Create:
+                    SettingsSerializationManager.Serialize(string.Format("{0}.xml", e.Item2), FftAndColorsSource);
+                    break;
+                case ProfileAction.Delete:
+                    File.Delete(string.Format("{0}.xml", e.Item2));
+                    break;
+                case ProfileAction.Apply:
+                    FftAndColorsSource = SettingsSerializationManager.DeSerialize(string.Format("{0}.xml", e.Item2), typeof(FFTDependencyWrapper)) as FFTDependencyWrapper;
+                    initializeBindings();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void initializeBindings()
+        {
+            LeftSliders_tsl.FftAndColorsSource = FftAndColorsSource;
         }
     }
 }

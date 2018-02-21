@@ -20,7 +20,17 @@ namespace AudioVis
     /// </summary>
     public partial class TwoSlidersWithLink : UserControl
     {
-        public FFTDependencyWrapper FftAndColorsSource { get; set; }
+        private FFTDependencyWrapper _fftAndColorsSource;
+
+        public FFTDependencyWrapper FftAndColorsSource
+        {
+            get => _fftAndColorsSource;
+            set
+            {
+                _fftAndColorsSource = value;
+                this.DataContext = _fftAndColorsSource;
+            }
+        }
         public TwoSlidersWithLink()
         {
             FftAndColorsSource = new FFTDependencyWrapper();
