@@ -51,6 +51,20 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="45"/>
+            <RowDefinition>
+                <RowDefinition.Style>
+                    <Style TargetType="RowDefinition">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=Alarms_ex, Path=IsExpanded}" Value="False">
+                                <Setter Property="Height" Value="{Binding ElementName=Alarms_ex, Path=Height}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=Alarms_ex, Path=IsExpanded}" Value="True">
+                                <Setter Property="Height" Value="*"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </RowDefinition.Style>
+            </RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition>
@@ -158,7 +172,7 @@
             </Expander.Header>
             <local:Visuals x:Name="Right_v" Header="Right channel"/>
         </Expander>
-        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="3" >
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="3" >
             <ComboBox Margin="8" Width="100" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=ArduinoBridge.Instance.ComsList, diag:PresentationTraceSources.TraceLevel=High}" SelectionChanged="ComboBox_SelectionChanged" Name="Ports_cb" BorderBrush="Yellow" ToolTip="Select COM port to output brightness data"/>
             <local:ProfileControl ProfileNumber="1" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>
             <local:ProfileControl ProfileNumber="2" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>
@@ -166,6 +180,12 @@
             <local:ProfileControl ProfileNumber="4" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>
             <local:ProfileControl ProfileNumber="5" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>
         </StackPanel>
-        
+        <Expander ExpandDirection="Down" Grid.Row="2" Grid.ColumnSpan="3" x:Name="Alarms_ex" Header="SunShine/SunSet alarms">
+            <StackPanel Orientation="Vertical" >
+                <local:Alarm Caption="Sunset" x:Name="Sunset_alm" IsSunSet="True"/>
+                <local:Alarm Caption="Sunshine" x:Name="Sunshine_alm" IsSunSet="False"/>
+            </StackPanel>
+        </Expander>
+
     </Grid>
 </Controls:MetroWindow>
