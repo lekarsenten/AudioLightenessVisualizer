@@ -78,6 +78,8 @@ namespace AudioVis
         private void initializeBindings()
         {
             LeftSliders_tsl.FftAndColorsSource = FftAndColorsSource;
+            FftAndColorsSource.BlueLight.NotifyAboutProps();
+            FftAndColorsSource.YellowLight.NotifyAboutProps();
         }
     }
 }

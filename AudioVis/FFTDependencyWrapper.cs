@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace AudioVis
 {
@@ -70,6 +71,14 @@ namespace AudioVis
         public ColorTemperatureDataDependencyWrapper() : base()
         {
 
+        }
+
+        public void NotifyAboutProps()
+        {
+            OnPropertyChanged("Low");
+            OnPropertyChanged("High");
+            OnPropertyChanged("LowHz");
+            OnPropertyChanged("HighHz");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
