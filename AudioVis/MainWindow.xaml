@@ -35,6 +35,7 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <CheckBox Content="On top" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=Topmost, Mode=TwoWay}"/>
+            <CheckBox Content="Log" Name="Log_cb"/>
             <CheckBox Content="Separate L/R" IsChecked="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=FftAndColorsSource.TwoChannels, Mode=TwoWay}" BorderBrush="Yellow">
                 <CheckBox.ToolTip>
                     <TextBlock>
@@ -173,7 +174,7 @@
             <local:Visuals x:Name="Right_v" Header="Right channel"/>
         </Expander>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="3" >
-            <ComboBox Margin="8" Width="100" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=ArduinoBridge.Instance.ComsList, diag:PresentationTraceSources.TraceLevel=High}" SelectionChanged="ComboBox_SelectionChanged" Name="Ports_cb" BorderBrush="Yellow" ToolTip="Select COM port to output brightness data"/>
+            <ComboBox Margin="8" Width="100" ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=Controls:MetroWindow}, Path=Sender.Instance.TargetsList, diag:PresentationTraceSources.TraceLevel=High}" SelectionChanged="ComboBox_SelectionChanged" Name="Ports_cb" BorderBrush="Yellow" ToolTip="Select COM port to output brightness data"/>
             <local:ProfileControl ProfileNumber="1" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>
             <local:ProfileControl ProfileNumber="2" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>
             <local:ProfileControl ProfileNumber="3" CheckBoxClicked="ProfileControl_CheckBoxClicked"/>

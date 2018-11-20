@@ -46,7 +46,10 @@ namespace AudioVis
             var colors = FromTwoValues(blue, yellow);
             ColorRectangle.Fill = new SolidColorBrush(colors.Item3);
             ColorRectangleLeft.Fill = new SolidColorBrush(colors.Item1);
-            ColorRectangleRight.Fill = new SolidColorBrush(colors.Item2);
+            if (yellow > 0)
+            {
+                ColorRectangleRight.Fill = new SolidColorBrush(colors.Item2);
+            }
             ValuesBlue.Add((byte)blue);
             ValuesYellow.Add((byte)yellow);
             Count++;

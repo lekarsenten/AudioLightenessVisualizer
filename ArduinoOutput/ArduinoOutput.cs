@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
@@ -6,34 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArduinoOutput
+namespace OutputBridges
 {
-    /// <summary>
-    /// Left with Low is 0
-    /// Left with High is 2
-    /// Right with Low is 1
-    /// Right with High is 3
-    /// </summary>
-    [Flags]
-    public enum ChannelData
+
+    
+    public class ArduinoSender : PacketSender, INotifyPropertyChanged, IDisposable
     {
-        Left = 0x0,
-        Right = 0x1,
-        LowFreq = 0x0,
-        HighFreq = 0x2
-    }
-    public struct Packet
-    {
-        public ChannelData channelData;
-        public byte Brightness;
-        public string GetMessage()
-        {
-            return string.Format("{0}:{1}{2}", (byte)channelData, Brightness, Environment.NewLine);
-        }
-    }
-    public class ArduinoSender : INotifyPropertyChanged, IDisposable
-    {
-        private static string[] _comsList;
+        private static List<string> _comsList;
         private SerialPort _currentComPort;
         private static ArduinoSender _instance;
 
@@ -57,13 +37,13 @@ namespace ArduinoOutput
             }
         }
 
-        public string[] ComsList
+        public List<string> ComsList
         {
             get
             {
                 if (_comsList == null)
                 {
-                    _comsList = SerialPort.GetPortNames();
+                    _comsList = SerialPort.GetPortNames().ToList();
                 }
                 return _comsList;
             }
@@ -78,10 +58,10 @@ namespace ArduinoOutput
         
         public ArduinoSender(string portName)
         {
-            SetPort(portName);
+            SetTarget(portName);
         }
 
-        public void SetPort(string portName)
+        public override void SetTarget(string portName)
         {
             Dispose();//close previous COM port
             _currentComPort = new SerialPort(portName);
@@ -98,7 +78,7 @@ namespace ArduinoOutput
             }
         }
 
-        public bool SendValue(Packet packet)
+        public override bool SendValues(ChannelValues packet)
         {
             if (!IsInitialized)
             {
@@ -106,18 +86,13 @@ namespace ArduinoOutput
             }
             try
             {
-                _currentComPort.Write(packet.GetMessage());
+                _currentComPort.Write(GetMessage(packet));
             }
             catch (Exception)
             {
                 return false;
             }
             return true;
-        }
-
-        public bool SendValue(ChannelData channelData, byte brightness)
-        {
-            return SendValue(new Packet { channelData = channelData, Brightness = brightness });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -132,6 +107,11 @@ namespace ArduinoOutput
             {
                 ((IDisposable)_currentComPort).Dispose();
             }
+        }
+
+        private string GetMessage(ChannelValues value)
+        {
+            return string.Format("{0}:{1}|{2}{3}", Convert.ToByte(value.isRightChannel), value.B, value.Y, Environment.NewLine);
         }
     }
 }

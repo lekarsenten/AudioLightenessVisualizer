@@ -92,6 +92,7 @@ namespace AudioVis
     public class FFTDependencyWrapper : FFTDataProvider.FFTDataMapper, INotifyPropertyChanged
     {
         private bool _isLinked;
+        private bool _useLog;
         private ColorTemperatureDataDependencyWrapper _YellowLight;
         private ColorTemperatureDataDependencyWrapper _BlueLight;
 
@@ -109,6 +110,19 @@ namespace AudioVis
                     updateAverage();
                 }
                 OnPropertyChanged("TwoChannels");
+            }
+        }
+
+        public bool UseLog
+        {
+            get
+            {
+                return _useLog;
+            }
+            set
+            {
+                _useLog = value;
+                OnPropertyChanged("UseLog");
             }
         }
 
